@@ -101,16 +101,19 @@ class Database
       $conditions[] = " tip_stoc = '$type'";
     }
     if ($date != 'toate') {
-      $conditions[] = " date_format(introdus, '%d-%m-%Y') > '$date'";
+      $date = strtotime($date);
+      $date = date('Y-m-d', $date);
+      $conditions[] = " introdus > '$date'";
     }
     if (sizeof($conditions) > 0) {
       $sql = $sql . " WHERE " . implode(" AND", $conditions);
     }
-    echo $sql;
     $response = mysqli_query($this->conn, $sql);
-
-    $data = mysqli_fetch_all($response, MYSQLI_ASSOC);
-
-    return $data;
+    if (! $response) {
+      return false;
+    } else {
+      $data = mysqli_fetch_all($response, MYSQLI_ASSOC);
+      return $data;
+    }
   }
 }

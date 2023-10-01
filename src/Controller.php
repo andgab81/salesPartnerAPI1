@@ -39,17 +39,29 @@ class Controller
           switch ($type) {
             case 'noi':
               $data = $this->database->getCarsByTypeAndDate("nou", $date);
-              echo json_encode($data);
+              if (! $data) {
+                echo json_encode(["message" => "Nu sunt rezultate"]);
+              } else {
+                echo json_encode($data);
+              }
               break;
 
             case 'vechi':
               $data = $this->database->getCarsByTypeAndDate("utilizat", $date);
-              echo json_encode($data);
+              if (! $data) {
+                echo json_encode(["message" => "Nu sunt rezultate"]);
+              } else {
+                echo json_encode($data);
+              }
               break;
 
             case 'toate':
               $data = $this->database->getCarsByTypeAndDate($date);
-              echo json_encode($data);
+              if (! $data) {
+                echo json_encode(["message" => "Nu sunt rezultate"]);
+              } else {
+                echo json_encode($data);
+              }
               break;
 
             default:
