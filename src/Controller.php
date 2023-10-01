@@ -36,37 +36,16 @@ class Controller
         break;
       case 'masini':
         if ($method == "GET") {
-          switch ($type) {
-            case 'noi':
-              $data = $this->database->getCarsByTypeAndDate("nou", $date);
-              if (! $data) {
-                echo json_encode(["message" => "Nu sunt rezultate"]);
-              } else {
-                echo json_encode($data);
-              }
-              break;
-
-            case 'vechi':
-              $data = $this->database->getCarsByTypeAndDate("utilizat", $date);
-              if (! $data) {
-                echo json_encode(["message" => "Nu sunt rezultate"]);
-              } else {
-                echo json_encode($data);
-              }
-              break;
-
-            case 'toate':
-              $data = $this->database->getCarsByTypeAndDate($date);
-              if (! $data) {
-                echo json_encode(["message" => "Nu sunt rezultate"]);
-              } else {
-                echo json_encode($data);
-              }
-              break;
-
-            default:
-              $this->respondTypeNotAllowed();
-              break;
+          $types = ['noi' => "nou", 'vechi' => "utilizat", 'toate' => "toate"];
+          if (array_key_exists($type, $types)) {
+            $data = $this->database->getCarsByTypeAndDate($types[$type], $date);
+            if (! $data) {
+              echo json_encode(["message" => "Nu sunt rezultate"]);
+            } else {
+              echo json_encode($data);
+            }
+          } else {
+            $this->respondTypeNotAllowed();
           }
         } else {
           $this->respondMethodNotAllowed("GET");
